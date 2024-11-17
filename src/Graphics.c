@@ -221,7 +221,7 @@ void draw_game_world(GameObject *game) {
     if (cameraX + GAME_WIDTH > WORLD_WIDTH) cameraX = WORLD_WIDTH - SCREEN_WIDTH;
 
     // Loop over the screen dimensions and render the visible portion of the world map
-    for (int i = 0; i < GAME_HEIGHT ; i++) {
+    for (int i = 0; i < GAME_HEIGHT; i++) { 
         for (int j = 0; j < GAME_WIDTH; j++) {
             int worldX = cameraX + j;  // World position in x (adjusted by camera offset)
 
@@ -229,16 +229,19 @@ void draw_game_world(GameObject *game) {
             if (worldX >= 0 && worldX < WORLD_WIDTH) {
                 switch (game->world.worldMap[i][worldX].type) {
                     case AIR:
-                        draw_char_at(game, j, i, L' ', FOREGROUND_WHITE, BG_COLOR);
+                        draw_char_at(game, j, i+1, L' ', FOREGROUND_WHITE, BG_COLOR);
                         break;
                     case GROUND:
-                        draw_char_at(game, j, i, L'█', FOREGROUND_WHITE, BG_COLOR);
+                        draw_char_at(game, j, i+1, L'█', FOREGROUND_WHITE, BG_COLOR);
                         break;
                     case RAMP_UP:
-                        draw_char_at(game, j, i, L'╱', FOREGROUND_WHITE, BG_COLOR);
+                        draw_char_at(game, j, i+1, L'╱', FOREGROUND_WHITE, BG_COLOR);
                         break;
                     case RAMP_DOWN:
-                        draw_char_at(game, j, i, L'╲', FOREGROUND_WHITE, BG_COLOR);
+                        draw_char_at(game, j, i+1, L'╲', FOREGROUND_WHITE, BG_COLOR);
+                        break;
+                    default:
+                        draw_char_at(game, j, i+1, L'█', FOREGROUND_WHITE, BG_COLOR);
                         break;
                 }
             }
@@ -246,8 +249,17 @@ void draw_game_world(GameObject *game) {
     }
 
     // Draw the player at the screen coordinates (center the player)
-    draw_char_at(game, (int)(game->player.x - cameraX), (int)(game->player.y-1), L'█', FOREGROUND_RED, BG_COLOR);
     draw_char_at(game, (int)(game->player.x - cameraX), (int)(game->player.y), L'█', FOREGROUND_RED, BG_COLOR);
+    draw_char_at(game, (int)(game->player.x - cameraX), (int)(game->player.y+1), L'█', FOREGROUND_RED, BG_COLOR);
+
+    // Draw the bullets
+    for (int i = 0; i < game->bulletCount; i++) {
+        // Skip bullets that are out of bounds
+        if (game->bullet[i].x - cameraX > SCREEN_WIDTH || game->bullet[i].x - cameraX < 0){
+            continue;
+        }
+        draw_char_at(game, (int)(game->bullet[i].x - cameraX), (int)(game->bullet[i].y), L'⏺', FOREGROUND_YELLOW, BG_COLOR);
+    }
 }
 
 

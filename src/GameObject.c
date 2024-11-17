@@ -1,5 +1,7 @@
 #include <wchar.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "GameObject.h"
 #include "Graphics.h"
@@ -44,6 +46,31 @@ void game_init(GameObject *game)
 
     QueryPerformanceFrequency(&game->tpsFrequency);  // Get the frequency of the high-resolution counter
     QueryPerformanceCounter(&game->tpsLastTime);     // Get the initial timestamp
+
+    // Initialize random number generator
+    srand(time(NULL));
+
+    // Initialize Weapon #1 (pistol) #2 (shotgun) #3 (minigun)
+    game->weapon[0].damage = 10;
+    game->weapon[0].spread = 3.0;
+    game->weapon[0].bulletSpeedMultiplier = 0.7;
+    game->weapon[0].bulletCount = 1;
+    game->weapon[0].fireCooldownTime = 20;
+    game->weapon[0].fireCooldownCounter = 0;
+
+    game->weapon[1].damage = 10;
+    game->weapon[1].spread = 10.0;
+    game->weapon[1].bulletSpeedMultiplier = 0.7;
+    game->weapon[1].bulletCount = 5;
+    game->weapon[1].fireCooldownTime = 60;
+    game->weapon[1].fireCooldownCounter = 0;
+
+    game->weapon[2].damage = 10;
+    game->weapon[2].spread = 7.0;
+    game->weapon[2].bulletSpeedMultiplier = 1.0;
+    game->weapon[2].bulletCount = 1;
+    game->weapon[2].fireCooldownTime = 3;
+    game->weapon[2].fireCooldownCounter = 0;
 }
 
 void game_reset(GameObject *game) {

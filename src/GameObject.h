@@ -8,6 +8,9 @@
 
 #include "WorldObject.h"
 #include "PlayerController.h"
+#include "WeaponSystem.h"
+
+#define MAX_BULLETS 2000
 
 #define TARGET_TPS 60
 #define TARGET_TICK_TIME (1.0 / TARGET_TPS)
@@ -34,6 +37,10 @@ typedef struct GameObject
     int weaponSelected;
     int weaponFired;
     int weaponUpwards;
+    Weapon weapon[3];
+    Bullet bullet[MAX_BULLETS];
+    int bulletCount;
+
 
     // Game internal states 
     float fps;
