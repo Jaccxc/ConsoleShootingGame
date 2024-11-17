@@ -119,6 +119,14 @@ void draw_rect(GameObject *game, int x, int y, int width, int height, int fg, in
             bottomLeftCorner = L'█'; 
             bottomRightCorner = L'█';
             break;
+        default:
+            horizontalChar = L'═'; 
+            verticalChar = L'║';  
+            topLeftCorner = L'╔';  
+            topRightCorner = L'╗';
+            bottomLeftCorner = L'╚'; 
+            bottomRightCorner = L'╝';
+            break;
     }
 
     // Draw the top border
@@ -163,8 +171,20 @@ void draw_ui(GameObject *game) {
 
     // Draw Weapon Icon
     draw_rect(game, 3, 34, 25, 10, FOREGROUND_WHITE, BG_COLOR, BORDER_LIGHT);
-    draw_rect(game, 3+25+2, 34, 25, 10, FOREGROUND_WHITE, BG_COLOR, BORDER_HEAVY);
+    draw_rect(game, 3+25+2, 34, 25, 10, FOREGROUND_WHITE, BG_COLOR, BORDER_LIGHT);
     draw_rect(game, 3+25+2+25+2, 34, 25, 10, FOREGROUND_WHITE, BG_COLOR, BORDER_LIGHT);
+    switch (game->weaponSelected) {
+        case 0:
+            draw_rect(game, 3, 34, 25, 10, FOREGROUND_WHITE, BG_COLOR, BORDER_HEAVY);
+            break;
+        case 1:
+            draw_rect(game, 3+25+2, 34, 25, 10, FOREGROUND_WHITE, BG_COLOR, BORDER_HEAVY);
+            break;
+        case 2:
+            draw_rect(game, 3+25+2+25+2, 34, 25, 10, FOREGROUND_WHITE, BG_COLOR, BORDER_HEAVY);
+            break;
+    }
+
 
     draw_text(game, 3, 3+25, 34+5-1, L"Weapon #1", FOREGROUND_WHITE, BG_COLOR, CENTER);
     draw_text(game, 3, 3+25, 34+5, L"Pistol", FOREGROUND_WHITE, BG_COLOR, CENTER);
@@ -178,6 +198,17 @@ void draw_ui(GameObject *game) {
 
     // TPS Counter
     draw_text(game, SCREEN_WIDTH-15, SCREEN_WIDTH-3, 2, game->tpsString, FOREGROUND_WHITE, BG_COLOR, RIGHT);
+
+    if (game->isHintBoxVisible) {
+        for(int i = 0; i < 12; i++) {
+            for(int j = 0; j < 48; j++) {
+                draw_char_at(game, SCREEN_WIDTH/2-24+j, SCREEN_HEIGHT/2-6+i, L' ', FOREGROUND_WHITE, BG_COLOR);
+            }
+        }
+        draw_rect(game, SCREEN_WIDTH/2-24, SCREEN_HEIGHT/2-6, 48, 12, FOREGROUND_WHITE, BG_COLOR, BORDER_MEDIUM);
+        draw_text(game, SCREEN_WIDTH/2-24, SCREEN_WIDTH/2+24, SCREEN_HEIGHT/2-6+4, game->hintBoxText, FOREGROUND_WHITE, BG_COLOR, CENTER);
+        draw_text(game, SCREEN_WIDTH/2-24, SCREEN_WIDTH/2+24, SCREEN_HEIGHT/2-6+7, L" Restart ", BACKGROUND_CYAN , FOREGROUND_BLACK, CENTER);
+    }
 }
 
 // Function to draw the game world (e.g., player, enemies, etc.)

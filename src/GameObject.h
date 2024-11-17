@@ -31,7 +31,9 @@ typedef struct GameObject
     float gravity;
     WorldObject world;
     PlayerObject player;
-
+    int weaponSelected;
+    int weaponFired;
+    int weaponUpwards;
 
     // Game internal states 
     float fps;
@@ -44,11 +46,14 @@ typedef struct GameObject
     LARGE_INTEGER tpsFrequency;
 
     // Rendering 
+    int isHintBoxVisible;
+    WCHAR hintBoxText[30];
     HANDLE hConsoleOutput;
     CHAR_INFO screenBuffer[BUFFER_SIZE+5];
 } GameObject;
 
 void game_init(GameObject *game);
+void game_reset(GameObject *game);
 void game_handle_input(GameObject *game);
 void game_update(GameObject *game);
 void game_render(GameObject *game);
